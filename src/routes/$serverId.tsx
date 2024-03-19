@@ -2,6 +2,7 @@ import {
   LoaderFunctionArgs,
   NavLink,
   Outlet,
+  json,
   redirect,
   useLoaderData,
   useParams,
@@ -13,7 +14,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   let serverId = params.serverId;
   if (!serverId) return redirect("/");
   let channels = await listChannels(serverId);
-  return { channels };
+  return json({ channels });
 }
 
 export function Component() {

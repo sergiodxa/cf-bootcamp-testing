@@ -2,6 +2,7 @@ import {
   ActionFunctionArgs,
   Form,
   LoaderFunctionArgs,
+  json,
   redirect,
   useLoaderData,
   useNavigation,
@@ -14,7 +15,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (!channelId) return redirect("/");
   let messages = await listMessages(channelId);
   let users = await listUsers();
-  return { messages, users };
+  return json({ messages, users });
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -80,12 +81,14 @@ function CreateMessageForm() {
     <Form
       method="post"
       className="p-4 flex flex-shrink-0 w-full items-start gap-4"
+      encType="multipart/form-data"
     >
       <textarea
         name="content"
         rows={1}
         className="border-2 border-slate-300 px-4 py-2 resize-none rounded-lg flex-grow focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 disabled:bg-slate-200 duration-200 delay-100"
         disabled={navigation.state !== "idle"}
+        aria-label="Message content"
       />
       <button
         type="submit"
